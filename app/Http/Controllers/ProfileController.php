@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Traits\fileUploadTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    use fileUploadTrait;
     /**
      * Display the user's profile form.
      */
@@ -35,6 +37,29 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function updateProfilePhoto(Request $request)
+    {
+
+        $request->validate([
+            'avatar' => ['image', 'max:5000'],
+            'cover' => ['image', 'max:5000']
+        ]);
+
+        $user = Auth::user();
+        if ($request->has('avatar')) {
+            $oldImagePath = $user->avatar;
+            $newImagePath = $this->fileUpdate($request, 'myDisk', 'profile', 'avatar', $oldImagePath);
+            $user->avatar = $newImagePath;
+        }
+        if ($request->has('cover')) {
+            $oldImagePath = $user->cover;
+            $newImagePath = $this->fileUpdate($request, 'myDisk', 'profile', 'cover', $oldImagePath);
+            $user->cover = $newImagePath;
+        }
+        $user->save();
+        return redirect()->back();
     }
 
     /**

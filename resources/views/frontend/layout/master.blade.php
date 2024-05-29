@@ -34,6 +34,7 @@
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/plugins/lightgallery.min.css">
         <!-- Main Style CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/style.css">
+
     </head>
 
     <body>
@@ -41,7 +42,6 @@
 
         <main>
             @yield('content')
-
         </main>
 
         <!-- Scroll to top start -->
@@ -76,6 +76,7 @@
         <script src="{{ asset('frontend') }}/js/plugins/isotope.pkgd.min.js"></script>
         <!-- Main JS -->
         <script src="{{ asset('frontend') }}/js/main.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
     </body>
 
 </html>
