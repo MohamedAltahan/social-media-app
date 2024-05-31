@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Image;
+use App\Models\Comment;
 use App\Models\Post;
-use App\Traits\fileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class CommentController extends Controller
 {
-    use fileUploadTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -34,33 +31,27 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'body' => ['string'],
-            'post_image' => ['image', 'max:5000']
+            'postId' => ['integer'],
+            'commentBody' => ['string']
         ]);
 
-        $post = Post::create([
-            'user_id' => Auth::user()->id, 'body' => $request->body
+        Post::findOrFail($request->postId);
+
+        $comment = Comment::create([
+            'body' => $request->commentBody,
+            'post_id' => $request->postId,
+            'user_id' => Auth::user()->id,
         ]);
-
-
-        if ($request->has('post_image')) {
-            $imagePath =  $this->fileUplaod($request, 'myDisk', 'post', 'post_image');
-            $post->image()->create([
-                'name' => $imagePath,
-            ]);
-        }
-
-
-
-        return redirect()->back();
+        return $comment;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $postId)
     {
-        //
+        $comments = Comment::with('user')->where('post_id', $postId)->orderBy('created_at', 'DESC')->get();
+        return view('frontend.layout.sections.comment-modal', compact('comments', 'postId'));
     }
 
     /**

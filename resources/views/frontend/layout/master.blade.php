@@ -2,6 +2,7 @@
 <html class="no-js" lang="en">
 
     <head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>one volt</title>
@@ -34,6 +35,8 @@
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/plugins/lightgallery.min.css">
         <!-- Main Style CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/style.css">
+        @stack('styles')
+
 
     </head>
 
@@ -77,6 +80,7 @@
         <!-- Main JS -->
         <script src="{{ asset('frontend') }}/js/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+        @stack('scripts')
     </body>
 
 </html>

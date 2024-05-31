@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Image;
+use App\Models\Like;
 use App\Models\Post;
-use App\Traits\fileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class LikeController extends Controller
 {
-    use fileUploadTrait;
     /**
      * Display a listing of the resource.
      */
@@ -34,25 +32,24 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'body' => ['string'],
-            'post_image' => ['image', 'max:5000']
+            'postId' => ['integer']
         ]);
 
-        $post = Post::create([
-            'user_id' => Auth::user()->id, 'body' => $request->body
-        ]);
+        Post::findOrFail($request->postId);
 
+        //check the status of the like first
+        $oldLike = Like::where(['post_id' => $request->postId, 'user_id' => Auth::user()->id])->first();
 
-        if ($request->has('post_image')) {
-            $imagePath =  $this->fileUplaod($request, 'myDisk', 'post', 'post_image');
-            $post->image()->create([
-                'name' => $imagePath,
+        if ($oldLike) {
+            $oldLike->delete();
+            return 0;
+        } else {
+            Like::create([
+                'user_id' => Auth::user()->id,
+                'post_id' => $request->postId,
             ]);
+            return 1;
         }
-
-
-
-        return redirect()->back();
     }
 
     /**
@@ -60,7 +57,9 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        Post::findOrFail($id);
+        $postLikes = Like::with('user')->where('post_id', $id)->get();
+        return view('frontend.layout.sections.post-likes-modal', compact('postLikes'));
     }
 
     /**

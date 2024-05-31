@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Frontend\CommentController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\LikeController;
+use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\TimeLineController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +31,15 @@ Route::middleware('auth')->group(function () {
 
     //my timeLine profile ______________________________________________________________________
     Route::get('/time-line/{id}', [TimeLineController::class, 'index'])->name('time-line.index');
+
+    //post ______________________________________________________________________________________
+    Route::resource('/post', PostController::class);
+
+    //comments ___________________________________________________________________________________
+    Route::resource('/comment', CommentController::class);
+
+    //like ___________________________________________________________________________________
+    Route::resource('/like', LikeController::class);
 });
 
 require __DIR__ . '/auth.php';
