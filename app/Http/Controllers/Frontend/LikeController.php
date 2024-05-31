@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\LikeEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Like;
 use App\Models\Post;
 use App\Notifications\LikePostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Notification;
 
 class LikeController extends Controller
@@ -38,23 +40,30 @@ class LikeController extends Controller
         ]);
 
         $post = Post::findOrFail($request->postId);
-
         //check the status of the like first
         $oldLike = Like::where(['post_id' => $request->postId, 'user_id' => Auth::user()->id])->first();
 
         if ($oldLike) {
+
             $oldLike->delete();
             return 0;
         } else {
+
+            //store like in database
             Like::create([
                 'user_id' => Auth::user()->id,
                 'post_id' => $request->postId,
             ]);
-            $postUser = $post->user;
 
-            // $postUserId->notify(new LikePostNotification());
-            //can send notify to more than one person (one step)
-            Notification::send($postUser, new LikePostNotification());
+            //prevent notification if owner likes its post
+            if ($post->user->id != Auth::user()->id) {
+                $postUser = $post->user;
+                //this can send notify to more than one person (one step)
+                Notification::send($postUser, new LikePostNotification($post->id));
+
+                //send notification via broadcasting
+                LikeEvent::dispatch($post);
+            }
             return 1;
         }
     }

@@ -12,8 +12,7 @@
         <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('frontend') }}/images/favicon.ico">
 
-        <!-- CSS
- ============================================ -->
+        <!-- CSS ============================================ -->
         <!-- google fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900"
             rel="stylesheet">
@@ -36,7 +35,7 @@
         <!-- Main Style CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/style.css">
         @stack('styles')
-
+        @vite('resources/js/app.js')
 
     </head>
 
@@ -80,6 +79,11 @@
         <!-- Main JS -->
         <script src="{{ asset('frontend') }}/js/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+        <script>
+            const USER = {
+                id: "{{ auth()->user()->id }}",
+            }
+        </script>
         @stack('scripts')
     </body>
 

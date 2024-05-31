@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\FriendRequestEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Friend;
 use App\Models\User;
+use App\Notifications\FriendRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Notification;
 
 class FriendController extends Controller
 {
@@ -35,25 +39,24 @@ class FriendController extends Controller
             'userId' => 'integer'
         ]);
 
-        User::findOrFail($request->userId);
-
+        $friend =  User::findOrFail($request->userId);
         //first check the status of the friendship
         $oldFriendship = Friend::where([
             'user_id' => Auth::user()->id,
-            'friend_id' => $request->userId,
+            'friend_id' => $friend->id,
             'status' => 'pending'
         ])->first();
 
-        //this if to toggle friendship(add/remove)
+        //toggle friendship(add/remove)_______________
         if ($oldFriendship) {
             Friend::where([
                 //delete for me
                 'user_id' => Auth::user()->id,
-                'friend_id' => $request->userId,
+                'friend_id' => $friend->id,
                 'status' => 'pending'
             ])->orWhere([
                 //delete for him
-                'user_id' => $request->userId,
+                'user_id' => $friend->id,
                 'friend_id' => Auth::user()->id,
                 'status' => 'pending'
             ])->delete();
@@ -65,16 +68,22 @@ class FriendController extends Controller
                     //add to me
                     'status' => 'pending',
                     'user_id' => Auth::user()->id,
-                    'friend_id' => $request->userId,
+                    'friend_id' => $friend->id,
                     'created_at' => now()
                 ], [
                     //add to him
                     'status' => 'pending',
-                    'user_id' => $request->userId,
+                    'user_id' => $friend->id,
                     'friend_id' => Auth::user()->id,
                     'created_at' => now()
                 ]
             ]);
+
+            //send notification through a channel (database)
+            Notification::send($friend, new FriendRequestNotification);
+
+            //send notification via broadcasting
+            FriendRequestEvent::dispatch($friend->id);
             return 1;
         }
     }

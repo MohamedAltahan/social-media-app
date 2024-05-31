@@ -8,17 +8,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class LikePostNotification extends Notification
+class FriendRequestNotification extends Notification
 {
     use Queueable;
-    public $postId;
+
     /**
      * Create a new notification instance.
      */
-
-    public function __construct($postId)
+    public function __construct()
     {
-        $this->postId = $postId;
+        //
     }
 
     /**
@@ -31,20 +30,21 @@ class LikePostNotification extends Notification
         return ['database'];
     }
 
+
     /**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
      */
-    //save to database
     public function toArray(object $notifiable): array
     {
         return [
             'senderId' => Auth::user()->id,
             'senderName' => Auth::user()->name,
             'senderAvatar' => Auth::user()->avatar,
-            'eventType' => 'liked your post',
-            'notificationUrl' => route('post.show', $this->postId)
+            'eventType' => 'sent you friend request',
+            'notificationUrl' => route('time-line.index', Auth::user()->id)
+
         ];
     }
 }

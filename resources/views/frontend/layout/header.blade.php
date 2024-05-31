@@ -15,49 +15,57 @@
                                             class="fa-solid fa-bars-staggered"></i>
                                         Profile</a></li>
 
-                                <li class="notification-trigger"><a class="msg-trigger-btn" href="#b"><i
+                                <li class="notification-trigger"><a class="msg-trigger-btn" href="#b">
+                                        <span>{{ count(Auth::user()->unreadnotifications) }}</span><i
                                             class="fa-regular fa-bell"></i> notification</a>
                                     <div class="message-dropdown" id="b">
                                         <div class="dropdown-title">
                                             <p class="recent-msg"><i class="fa-regular fa-bell"></i>Notification</p>
-
                                         </div>
 
+                                        {{-- notifications_____________________________________________________ --}}
                                         <ul class="dropdown-msg-list">
-                                            @foreach (Auth::user()->notifications as $notification)
-                                                <li class=" d-flex justify-content-between">
-                                                    <!-- profile picture end -->
+                                            @forelse(Auth::user()->notifications->take(5) as $notification)
+                                                <li class="msg-list-item d-flex justify-content-between">
+
+                                                    <!-- profile picture start -->
                                                     <div class="profile-thumb">
                                                         <figure class="profile-thumb-middle">
-                                                            <img src="{{ asset('uploads/' . $notification->data['avatar']) }}"
-                                                                alt="profile picture">
+                                                            <a href="{{ @$notification->data['notificationUrl'] }}">
+                                                                <img src="{{ asset('uploads/' . @$notification->data['senderAvatar']) }}"
+                                                                    alt="profile picture">
+                                                            </a>
                                                         </figure>
                                                     </div>
-                                                    <!-- profile picture end -->
 
                                                     <!-- message content start -->
-
-                                                    <a href="{{ route('post.show', $notification->data['postId']) }}">
-                                                        <div class="msg-content notification-content">
-                                                            <strong href="profile.html">Robert Faul</strong>,
-                                                            <p>and 35 other people reacted to your photo</p>
-                                                        </div>
-                                                    </a>
+                                                    <div class="msg-content notification-content">
+                                                        <a href="{{ @$notification->data['notificationUrl'] }}">{{ $notification->data['senderName'] }},
+                                                            <p style="font-size: 16px">
+                                                                {{ $notification->data['eventType'] }}</p>
+                                                        </a>
+                                                    </div>
 
                                                     <!-- message content end -->
-
-                                                    <!-- message time start -->
                                                     <div class="msg-time">
-                                                        <p>25 Apr 2019</p>
+                                                        <p>{{ $notification->created_at->diffForHumans() }}</p>
                                                     </div>
-                                                    <!-- message time end -->
+
+                                                    @if ($notification->unread())
+                                                        <strong class="px-2">Not read</strong>
+                                                    @endif
+
                                                 </li>
-                                            @endforeach
+                                            @empty
+                                                <div class="d-flex justify-content-center">
+                                                    <h5 class="text-danger p-3 ">{{ __('No notifications yet') }}</h5>
+                                                </div>
+                                            @endforelse
                                         </ul>
 
                                         <div class="msg-dropdown-footer">
-                                            <button>See all in messenger</button>
-                                            <button>Mark All as Read</button>
+                                            <a href="{{ route('notifications.read-all') }}">Mark All as Read</a>
+                                            <a href="{{ route('notifications.clear-all') }}">Clear all</a>
                                         </div>
                                     </div>
                                 </li>
@@ -93,7 +101,8 @@
                             <div class="profile-thumb-small">
                                 <a href="javascript:void(0)" class="profile-triger">
                                     <figure>
-                                        <img src="{{ asset('uploads/' . Auth::user()->avatar) }}" alt="profile picture">
+                                        <img src="{{ asset('uploads/' . Auth::user()->avatar) }}"
+                                            alt="profile picture">
                                     </figure>
                                 </a>
                                 <div class="profile-dropdown">

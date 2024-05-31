@@ -3,25 +3,25 @@
     <div class="card card-small">
         <div class="share-box-inner">
 
-            <!-- profile picture end -->
-            <div class="profile-thumb">
-                <a href="#">
-                    <figure class="profile-thumb-middle">
-                        <img src="{{ asset('uploads/' . Auth::user()->avatar) }}" alt="profile picture">
-                    </figure>
-                </a>
-            </div>
-            <!-- profile picture end -->
+            @if (request('id') == Auth::user()->id || request()->is('/'))
+                <!-- profile picture end -->
+                <div class="profile-thumb">
+                    <a href="#">
+                        <figure class="profile-thumb-middle">
+                            <img src="{{ asset('uploads/' . Auth::user()->avatar) }}" alt="profile picture">
+                        </figure>
+                    </a>
+                </div>
 
-            <!-- share content box start -->
-            <div class="share-content-box w-100">
-                <form class="share-text-box">
-                    <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something"
-                        data-bs-toggle="modal" data-bs-target="#add-new-post" id="email"></textarea>
-                    <button class="btn-share" type="button">share</button>
-                </form>
-            </div>
-            <!-- share content box end -->
+                <!-- share content box start -->
+                <div class="share-content-box w-100">
+                    <form class="share-text-box">
+                        <textarea name="share" class="share-text-field" aria-disabled="true" placeholder="Say Something"
+                            data-bs-toggle="modal" data-bs-target="#add-new-post" id="email"></textarea>
+                        <button class="btn-share" type="button">share</button>
+                    </form>
+                </div>
+            @endif
 
             <!-- Modal start for posts -->
             <div class="modal fade" id="add-new-post" aria-labelledby="textbox">
@@ -49,7 +49,6 @@
                                 <button type="button" class="post-share-btn" data-bs-dismiss="modal"> cancel </button>
                                 <button type="submit" class="post-share-btn"> post</button>
                         </form>
-
                     </div>
                 </div>
             </div>

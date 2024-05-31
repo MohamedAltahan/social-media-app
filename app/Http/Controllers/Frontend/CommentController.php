@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\CommentEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\CommentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
 {
@@ -35,13 +38,21 @@ class CommentController extends Controller
             'commentBody' => ['string']
         ]);
 
-        Post::findOrFail($request->postId);
+        $post = Post::findOrFail($request->postId);
 
         $comment = Comment::create([
             'body' => $request->commentBody,
             'post_id' => $request->postId,
             'user_id' => Auth::user()->id,
         ]);
+
+        $postUser = $post->user;
+
+        //send notification to user through a channel 'database'
+        Notification::send($postUser, new CommentNotification($post->id));
+
+        //send notification via broadcasting
+        CommentEvent::dispatch($post);
         return $comment;
     }
 

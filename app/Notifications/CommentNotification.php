@@ -8,9 +8,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class LikePostNotification extends Notification
+class CommentNotification extends Notification
 {
     use Queueable;
+
     public $postId;
     /**
      * Create a new notification instance.
@@ -36,15 +37,15 @@ class LikePostNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    //save to database
     public function toArray(object $notifiable): array
     {
         return [
             'senderId' => Auth::user()->id,
             'senderName' => Auth::user()->name,
             'senderAvatar' => Auth::user()->avatar,
-            'eventType' => 'liked your post',
+            'eventType' => 'commented on your post',
             'notificationUrl' => route('post.show', $this->postId)
+
         ];
     }
 }

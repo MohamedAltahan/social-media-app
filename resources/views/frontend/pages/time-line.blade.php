@@ -41,7 +41,10 @@
                                     friend</a>
                             </div>
                         </div>
-                    @elseif (Auth::user()->id != request('id') && $friendship->status == 'pending')
+                    @elseif (Auth::user()->id != request('id') &&
+                            $friendship->status == 'pending' &&
+                            $friendship->user_id == Auth::user()->id &&
+                            $friendship->friend_id == request('id'))
                         <div class="col-lg-2 col-md-3 d-none d-md-block">
                             <div class="profile-edit-panel">
                                 <a href="#" class="edit-btn add-friend-btn" data-id="{{ request('id') }}"

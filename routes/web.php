@@ -4,6 +4,7 @@ use App\Http\Controllers\Frontend\CommentController;
 use App\Http\Controllers\Frontend\FriendController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\LikeController;
+use App\Http\Controllers\Frontend\NotificationController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\TimeLineController;
 use App\Http\Controllers\ProfileController;
@@ -41,11 +42,15 @@ Route::middleware('auth')->group(function () {
     //comments ___________________________________________________________________________________
     Route::resource('/comment', CommentController::class);
 
-    //like ___________________________________________________________________________________
+    //like _______________________________________________________________________________________
     Route::resource('/like', LikeController::class);
 
-    //friends ___________________________________________________________________________________
+    //friends ____________________________________________________________________________________
     Route::resource('/friend', FriendController::class);
+
+    //notifications _______________________________________________________________________________
+    Route::get('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::get('/notifications/clear-all', [NotificationController::class, 'clearAll'])->name('notifications.clear-all');
 });
 
 require __DIR__ . '/auth.php';
