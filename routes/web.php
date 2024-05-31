@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Frontend\CommentController;
+use App\Http\Controllers\Frontend\FriendController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\LikeController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\TimeLineController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Friend;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,7 @@ Route::middleware('auth')->group(function () {
     //Account setting _________________________________________________________________________
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'updateProfilePhoto'])->name('profile-photo.update');
+    Route::put('/profile-bio', [ProfileController::class, 'UpdateBio'])->name('profile-bio.update');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -40,6 +43,9 @@ Route::middleware('auth')->group(function () {
 
     //like ___________________________________________________________________________________
     Route::resource('/like', LikeController::class);
+
+    //friends ___________________________________________________________________________________
+    Route::resource('/friend', FriendController::class);
 });
 
 require __DIR__ . '/auth.php';

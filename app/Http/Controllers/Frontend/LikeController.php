@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Like;
 use App\Models\Post;
+use App\Notifications\LikePostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class LikeController extends Controller
 {
@@ -35,7 +37,7 @@ class LikeController extends Controller
             'postId' => ['integer']
         ]);
 
-        Post::findOrFail($request->postId);
+        $post = Post::findOrFail($request->postId);
 
         //check the status of the like first
         $oldLike = Like::where(['post_id' => $request->postId, 'user_id' => Auth::user()->id])->first();
@@ -48,6 +50,11 @@ class LikeController extends Controller
                 'user_id' => Auth::user()->id,
                 'post_id' => $request->postId,
             ]);
+            $postUser = $post->user;
+
+            // $postUserId->notify(new LikePostNotification());
+            //can send notify to more than one person (one step)
+            Notification::send($postUser, new LikePostNotification());
             return 1;
         }
     }

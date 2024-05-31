@@ -101,13 +101,17 @@
         <!-- post title start -->
         <div class="post-content">
             <p class="post-desc">{{ $post->body }} </p>
-            <div class="post-thumb-gallery">
-                <figure class="post-thumb img-popup">
-                    <a href="{{ asset('uploads/' . $post->image) }}">
-                        <img src="{{ asset('uploads/' . $post->image->name) }}" alt="post image" />
-                    </a>
-                </figure>
-            </div>
+
+            @if (isset($post->image))
+                <div class="post-thumb-gallery">
+                    <figure class="post-thumb img-popup">
+                        <a href="{{ asset('uploads/' . $post->image->name) }}">
+                            <img src="{{ asset('uploads/' . $post->image->name) }}" alt="" />
+                        </a>
+                    </figure>
+                </div>
+            @endif
+
             <div class="post-meta">
 
                 <div id="like_btn{{ $post->id }}">

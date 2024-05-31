@@ -2028,7 +2028,7 @@ textarea:focus {
     position: absolute;
     -webkit-transform: translateY(calc(-50% - 10px));
     -ms-transform: translateY(calc(-50% - 10px));
-    transform: translateY(calc(-50% - 10px));
+    transform: translateY(calc(-80% - 10px));
     background-color: #fff;
     z-index: 1;
 }
@@ -2038,6 +2038,13 @@ textarea:focus {
         -webkit-transform: translateY(calc(-50% - 10px));
         -ms-transform: translateY(calc(-50% - 10px));
         transform: translateY(calc(-50% - 10px));
+    }
+}
+@media only screen and (max-width: 991px) and (max-width: 1199.98px) {
+    .profile-picture-box {
+        -webkit-transform: translateY(calc(-50% - 10px));
+        -ms-transform: translateY(calc(-50% - 10px));
+        transform: translateY(calc(-100% - 35px));
     }
 }
 

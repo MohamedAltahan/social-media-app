@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use App\Traits\fileUploadTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -81,5 +82,16 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function UpdateBio(Request $request)
+    {
+        $request->validate([
+            'bio' => ['string', 'max:500']
+        ]);
+
+        $user = User::find(Auth::user()->id);
+        $user->update(['bio' => $request->bio]);
+        return redirect()->back();
     }
 }

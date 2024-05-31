@@ -8,12 +8,12 @@
                     <div class="header-top-navigation">
                         <nav>
                             <ul>
-                                <li class="active"><a href="{{ url('/') }}"><i class="fa-solid fa-house"></i>
+                                <li class=""><a href="{{ url('/') }}"><i class="fa-solid fa-house"></i>
                                         home</a></li>
 
-                                <li class="active"><a href="{{ route('time-line.index', Auth::user()->id) }}"><i
+                                <li class=""><a href="{{ route('time-line.index', Auth::user()->id) }}"><i
                                             class="fa-solid fa-bars-staggered"></i>
-                                        Time Line</a></li>
+                                        Profile</a></li>
 
                                 <li class="notification-trigger"><a class="msg-trigger-btn" href="#b"><i
                                             class="fa-regular fa-bell"></i> notification</a>
@@ -24,30 +24,35 @@
                                         </div>
 
                                         <ul class="dropdown-msg-list">
-                                            <li class="msg-list-item d-flex justify-content-between">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <figure class="profile-thumb-middle">
-                                                        <img src="assets/images/profile/profile-small-3.jpg"
-                                                            alt="profile picture">
-                                                    </figure>
-                                                </div>
-                                                <!-- profile picture end -->
+                                            @foreach (Auth::user()->notifications as $notification)
+                                                <li class=" d-flex justify-content-between">
+                                                    <!-- profile picture end -->
+                                                    <div class="profile-thumb">
+                                                        <figure class="profile-thumb-middle">
+                                                            <img src="{{ asset('uploads/' . $notification->data['avatar']) }}"
+                                                                alt="profile picture">
+                                                        </figure>
+                                                    </div>
+                                                    <!-- profile picture end -->
 
-                                                <!-- message content start -->
-                                                <div class="msg-content notification-content">
-                                                    <a href="profile.html">Robert Faul</a>,
-                                                    <a href="profile.html">william jhon</a>
-                                                    <p>and 35 other people reacted to your photo</p>
-                                                </div>
-                                                <!-- message content end -->
+                                                    <!-- message content start -->
 
-                                                <!-- message time start -->
-                                                <div class="msg-time">
-                                                    <p>25 Apr 2019</p>
-                                                </div>
-                                                <!-- message time end -->
-                                            </li>
+                                                    <a href="{{ route('post.show', $notification->data['postId']) }}">
+                                                        <div class="msg-content notification-content">
+                                                            <strong href="profile.html">Robert Faul</strong>,
+                                                            <p>and 35 other people reacted to your photo</p>
+                                                        </div>
+                                                    </a>
+
+                                                    <!-- message content end -->
+
+                                                    <!-- message time start -->
+                                                    <div class="msg-time">
+                                                        <p>25 Apr 2019</p>
+                                                    </div>
+                                                    <!-- message time end -->
+                                                </li>
+                                            @endforeach
                                         </ul>
 
                                         <div class="msg-dropdown-footer">
@@ -99,7 +104,8 @@
                                     <div class="profile-body">
                                         <ul>
                                             <li><a href="{{ route('profile.update') }}"><i
-                                                        class="flaticon-settings"></i> {{ __('Setting') }}</a>
+                                                        class="flaticon-settings"></i>
+                                                    {{ __('Setting') }}</a>
                                             </li>
                                         </ul>
                                         <ul>
