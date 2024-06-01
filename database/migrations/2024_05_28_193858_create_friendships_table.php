@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('friends', function (Blueprint $table) {
+        Schema::create('friendships', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['accepted', 'pending']);
+            $table->enum('status', ['accepted', 'pending'])->default('pending');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('friend_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();

@@ -44,4 +44,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // //relations______________________________________________________________
+    // public function friends()
+    // {
+    //     return $this->hasMany(
+    //         Friend::class,
+    //         'user_id',
+    //         'id'
+    //     );
+    // }
+
+    // //relations______________________________________________________________
+    // public function friends()
+    // {
+    //     return $this->hasMany(
+    //         User::class,   //related model
+    //         'friend_user', //pivot
+    //         'user_id',     //forigenkey for this model in pivot
+    //         'friend_id',   //f.k for the other model(related) in pivot
+    //         'id',          //pk for this model
+    //         'id'           //pk for other model(related)
+    //     );
+    // }
 }

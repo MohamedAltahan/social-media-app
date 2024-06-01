@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use App\Events\FriendRequestEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Friend;
+use App\Models\Friendship;
+use App\Models\FriendUser;
 use App\Models\User;
 use App\Notifications\FriendRequestNotification;
+use App\Traits\friendableTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -14,6 +17,7 @@ use Illuminate\Support\Facades\Notification;
 
 class FriendController extends Controller
 {
+    use friendableTrait;
     /**
      * Display a listing of the resource.
      */
@@ -40,52 +44,31 @@ class FriendController extends Controller
         ]);
 
         $friend =  User::findOrFail($request->userId);
-        //first check the status of the friendship
-        $oldFriendship = Friend::where([
-            'user_id' => Auth::user()->id,
-            'friend_id' => $friend->id,
-            'status' => 'pending'
-        ])->first();
 
-        //toggle friendship(add/remove)_______________
-        if ($oldFriendship) {
-            Friend::where([
-                //delete for me
-                'user_id' => Auth::user()->id,
-                'friend_id' => $friend->id,
-                'status' => 'pending'
-            ])->orWhere([
-                //delete for him
-                'user_id' => $friend->id,
-                'friend_id' => Auth::user()->id,
-                'status' => 'pending'
-            ])->delete();
-            return 0;
-        } else {
-            //add friend to each other
-            Friend::insert([
-                [
-                    //add to me
-                    'status' => 'pending',
-                    'user_id' => Auth::user()->id,
-                    'friend_id' => $friend->id,
-                    'created_at' => now()
-                ], [
-                    //add to him
-                    'status' => 'pending',
-                    'user_id' => $friend->id,
-                    'friend_id' => Auth::user()->id,
-                    'created_at' => now()
-                ]
-            ]);
+        $oldFriendship = $this->checkFriendship($friend->id);
+
+
+        if ($oldFriendship == 'friend') {
+
+            return  $this->deleteFriend($friend->id);
+        } elseif ($oldFriendship == 'sent') {
+
+            return  $this->deleteFriend($friend->id);
+        } elseif ($oldFriendship == 'accept') {
+
+            return  $this->acceptFriend($friend->id);
+        } elseif ($oldFriendship == null) {
+
+            $friendship =  $this->addFriend($friend->id);
 
             //send notification through a channel (database)
             Notification::send($friend, new FriendRequestNotification);
 
             //send notification via broadcasting
             FriendRequestEvent::dispatch($friend->id);
-            return 1;
+            return $friendship;
         }
+        return 0;
     }
 
     /**
@@ -94,7 +77,7 @@ class FriendController extends Controller
     public function show(string $id)
     {
         User::findOrFail($id);
-        $friends = Friend::with('user')->where(['user_id' => $id, 'status' => 'accepted'])->get();
+        $friends = Friendship::with('user')->where(['user_id' => $id, 'status' => 'accepted'])->get();
         return view('frontend.pages.friends', compact('friends'));
     }
 

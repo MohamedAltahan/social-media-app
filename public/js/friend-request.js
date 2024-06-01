@@ -13,8 +13,10 @@ $(document).ready(function () {
             url,
             data: { userId },
             success: function (data) {
-                if (data == 1) {
+                if (data == "sent") {
                     $(".add-friend-btn").text("Request sent");
+                } else if (data == "accepted") {
+                    $(".add-friend-btn").text("Accepted");
                 } else {
                     $(".add-friend-btn").text("Add Friend");
                 }
