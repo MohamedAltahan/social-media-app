@@ -11,7 +11,7 @@
                     <div class="col-md-4 col-md-4">
                         <div class="profile-picture-box">
                             <figure class="profile-picture" style="width: 200px">
-                                <a href="profile.html">
+                                <a href="{{ route('time-line.index', Auth::user()->id) }}">
                                     <img src="{{ asset('uploads/' . @$user->avatar) }}" alt="profile picture">
                                 </a>
                             </figure>

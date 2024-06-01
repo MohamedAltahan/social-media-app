@@ -19,7 +19,7 @@ class TimeLineController extends Controller
     public function index($friendProfileId)
     {
         $user = User::findOrFail($friendProfileId);
-        $posts = Post::withCount('comments', 'likes')->where('user_id', $friendProfileId)->orderBy('created_at', 'Desc')->get();
+        $posts = Post::withCount('comments', 'likes')->where('user_id', $friendProfileId)->orderBy('created_at', 'Desc')->paginate(10);
         //my like on the posts
         $myLikes = Like::where('user_id', Auth::user()->id)->pluck('post_id')->toArray();
         $friendship = $this->checkFriendship($friendProfileId);

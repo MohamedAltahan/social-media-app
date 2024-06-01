@@ -55,16 +55,23 @@ class User extends Authenticatable
         );
     }
 
-    // //relations______________________________________________________________
-    // public function friends()
-    // {
-    //     return $this->hasMany(
-    //         User::class,   //related model
-    //         'friend_user', //pivot
-    //         'user_id',     //forigenkey for this model in pivot
-    //         'friend_id',   //f.k for the other model(related) in pivot
-    //         'id',          //pk for this model
-    //         'id'           //pk for other model(related)
-    //     );
-    // }
+    // accessor ____________________________________________________________
+    public function getAvatarAttribute($avatar)
+    {
+        if (!$avatar) {
+            return "default/profile-1.jpg";
+        } else {
+            return $avatar;
+        }
+    }
+
+    // accessor ____________________________________________________________
+    public function getCoverAttribute($cover)
+    {
+        if (!$cover) {
+            return "default/banner-small.jpg";
+        } else {
+            return $cover;
+        }
+    }
 }

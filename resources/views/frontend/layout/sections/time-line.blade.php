@@ -6,7 +6,7 @@
             @if (request('id') == Auth::user()->id || request()->is('/'))
                 <!-- profile picture end -->
                 <div class="profile-thumb">
-                    <a href="#">
+                    <a href="{{ route('time-line.index', Auth::user()->id) }}">
                         <figure class="profile-thumb-middle">
                             <img src="{{ asset('uploads/' . Auth::user()->avatar) }}" alt="profile picture">
                         </figure>
@@ -68,7 +68,7 @@
         <div class="post-title d-flex align-items-center">
             <!-- profile picture end -->
             <div class="profile-thumb">
-                <a href="#">
+                <a href="{{ route('time-line.index', $post->user->id) }}">
                     <figure class="profile-thumb-middle">
                         <img src="{{ asset('uploads/' . $post->user->avatar) }}" alt="profile picture" />
                     </figure>
@@ -78,7 +78,7 @@
 
             <div class="posted-author">
                 <h6 class="author">
-                    <a href="profile.html">{{ $post->user->name }}</a>
+                    <a href="{{ route('time-line.index', $post->user->id) }}">{{ $post->user->name }}</a>
                 </h6>
                 <span
                     class="post-time">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() }}</span>
@@ -91,7 +91,8 @@
                     <div class="post-settings arrow-shape">
                         <ul>
                             <li><a href="{{ route('post.edit', $post->id) }}">edit post</a></li>
-                            <li><a data-url="{{ route('post.destroy', $post->id) }}" class="delete-post">delete post</a>
+                            <li><a data-url="{{ route('post.destroy', $post->id) }}" class="delete-post">delete
+                                    post</a>
                             </li>
                         </ul>
                     </div>
@@ -152,6 +153,11 @@
         </div>
     </div>
 @endforeach
+<div class="mt-4">
+    @if ($posts->hasPages())
+        {{ $posts->links() }}
+    @endif
+</div>
 <!-- post status end -->
 </div>
 
