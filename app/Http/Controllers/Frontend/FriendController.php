@@ -77,7 +77,7 @@ class FriendController extends Controller
     public function show(string $id)
     {
         User::findOrFail($id);
-        $friends = Friendship::with('user')->where(['user_id' => $id, 'status' => 'accepted'])->get();
+        $friends = $this->getFriends($id);
         return view('frontend.pages.friends', compact('friends'));
     }
 

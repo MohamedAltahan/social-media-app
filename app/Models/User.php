@@ -45,15 +45,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // //relations______________________________________________________________
-    // public function friends()
-    // {
-    //     return $this->hasMany(
-    //         Friend::class,
-    //         'user_id',
-    //         'id'
-    //     );
-    // }
+    //relations______________________________________________________________
+    public function friends()
+    {
+        return $this->hasMany(
+            Friendship::class,
+            'user_id',
+            'id'
+        );
+    }
 
     // //relations______________________________________________________________
     // public function friends()

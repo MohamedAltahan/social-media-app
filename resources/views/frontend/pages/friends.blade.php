@@ -14,9 +14,9 @@
                                         <li class="unorder-list border border-dark p-1">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
-                                                <a href="{{ route('time-line.index', $friend->user->id) }}">
+                                                <a href="{{ route('time-line.index', $friend->id) }}">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="{{ asset('uploads/' . $friend->user->avatar) }}"
+                                                        <img src="{{ asset('uploads/' . $friend->avatar) }}"
                                                             alt="profile picture" />
                                                     </figure>
                                                 </a>
@@ -24,8 +24,8 @@
                                             <!-- profile picture end -->
                                             <div class="unorder-list-info">
                                                 <h3 class="list-title">
-                                                    <a href="{{ route('time-line.index', $friend->user->id) }}">
-                                                        {{ $friend->user->name }}</a>
+                                                    <a href="{{ route('time-line.index', $friend->id) }}">
+                                                        {{ $friend->name }}</a>
                                                 </h3>
                                             </div>
                                         </li>
