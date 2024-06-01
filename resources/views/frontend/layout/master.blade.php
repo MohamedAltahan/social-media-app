@@ -16,9 +16,11 @@
         <!-- google fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900"
             rel="stylesheet">
+
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/vendor/bootstrap.min.css">
         <!-- Icon Font CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/vendor/bicon.min.css">
         <!-- Flat Icon CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/css/vendor/flaticon.css">
@@ -61,7 +63,6 @@
         <!-- jQuery JS -->
         <script src="{{ asset('frontend') }}/js/vendor/jquery-3.6.0.min.js"></script>
         <!-- Bootstrap JS -->
-        <script src="{{ asset('frontend') }}/js/vendor/bootstrap.bundle.min.js"></script>
         <!-- Slick Slider JS -->
         <script src="{{ asset('frontend') }}/js/plugins/slick.min.js"></script>
         <!-- nice select JS -->
@@ -79,6 +80,9 @@
         <!-- Main JS -->
         <script src="{{ asset('frontend') }}/js/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="{{ asset('frontend') }}/js/vendor/bootstrap.bundle.min.js"></script>
+
         <script>
             const USER = {
                 id: "{{ auth()->user()->id }}",

@@ -20,6 +20,7 @@ class TimeLineController extends Controller
     {
         $user = User::findOrFail($friendProfileId);
         $posts = Post::withCount('comments', 'likes')->where('user_id', $friendProfileId)->orderBy('created_at', 'Desc')->get();
+        //my like on the posts
         $myLikes = Like::where('user_id', Auth::user()->id)->pluck('post_id')->toArray();
         $friendship = $this->checkFriendship($friendProfileId);
         return view('frontend.pages.time-line', compact('posts', 'myLikes', 'user', 'friendship'));

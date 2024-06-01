@@ -83,18 +83,21 @@
                 <span
                     class="post-time">{{ \Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans() }}</span>
             </div>
-
-            <div class="post-settings-bar">
-                <span></span>
-                <span></span>
-                <span></span>
-                <div class="post-settings arrow-shape">
-                    <ul>
-                        <li><button>edit post</button></li>
-                        <li><button>delete post</button></li>
-                    </ul>
+            @if (Auth::user()->id == $post->user_id)
+                <div class="post-settings-bar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="post-settings arrow-shape">
+                        <ul>
+                            <li><a href="{{ route('post.edit', $post->id) }}">edit post</a></li>
+                            <li><a data-url="{{ route('post.destroy', $post->id) }}" class="delete-post">delete post</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            @endif
+
         </div>
 
         <!-- post title start -->
@@ -206,4 +209,5 @@
     <script src="{{ asset('js/comment.js') }}"></script>
     <script src="{{ asset('js/add-comment.js') }}"></script>
     <script src="{{ asset('js/like-post.js') }}"></script>
+    <script src="{{ asset('js/post.js') }}"></script>
 @endpush

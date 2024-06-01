@@ -26,4 +26,22 @@ $(document).ready(function () {
             },
         });
     });
+
+    $("body").on("click", ".delete-friend-btn", function (e) {
+        e.preventDefault();
+        let url = $(this).data("url");
+        $.ajax({
+            method: "DELETE",
+            url,
+            data: {},
+            success: function (data) {
+                if (data == "deleted") {
+                    location.reload();
+                }
+            },
+            error: function (error) {
+                alert("error");
+            },
+        });
+    });
 });

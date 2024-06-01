@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row align-items-center">
 
-                    <div class="col-md-3 col-md-3">
+                    <div class="col-md-4 col-md-4">
                         <div class="profile-picture-box">
                             <figure class="profile-picture" style="width: 200px">
                                 <a href="profile.html">
@@ -18,7 +18,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6 col-md-6 offset-lg-1">
+                    <div class="col-lg-4 col-md-4">
                         <div class="profile-menu-wrapper">
                             <div class="main-menu-inner header-top-navigation">
                                 <nav>
@@ -49,11 +49,17 @@
                             </div>
                         </div>
                     @elseif (Auth::user()->id != request('id') && $friendship == 'accept')
-                        <div class="col-lg-2 col-md-3 d-none d-md-block">
-                            <div class="profile-edit-panel">
+                        <div class="row" style="margin-left: 70%">
+                            <div class="profile-edit-panel col-md-1 m-1">
                                 <a href="#" class="edit-btn add-friend-btn" data-id="{{ request('id') }}"
                                     data-url="{{ route('friend.store') }}">accept request</a>
                             </div>
+
+                            <div class="profile-edit-panel col-md-1 m-1">
+                                <a href="#" class="edit-btn delete-friend-btn"
+                                    data-url="{{ route('friend.destroy', request('id')) }}">Cancel request</a>
+                            </div>
+
                         </div>
                     @elseif (Auth::user()->id != request('id') && $friendship == 'friend')
                         <div class="col-lg-2 col-md-3 d-none d-md-block">

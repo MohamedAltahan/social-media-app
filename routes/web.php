@@ -3,12 +3,14 @@
 use App\Http\Controllers\Frontend\CommentController;
 use App\Http\Controllers\Frontend\FriendController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ImageController;
 use App\Http\Controllers\Frontend\LikeController;
 use App\Http\Controllers\Frontend\NotificationController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\TimeLineController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Friend;
+use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +53,10 @@ Route::middleware('auth')->group(function () {
     //notifications _______________________________________________________________________________
     Route::get('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
     Route::get('/notifications/clear-all', [NotificationController::class, 'clearAll'])->name('notifications.clear-all');
+
+    //image ____________________________________________________________________________________
+    Route::get('/image/{imageId}', [ImageController::class, 'deleteImage'])->name('delete.image');
 });
+
 
 require __DIR__ . '/auth.php';

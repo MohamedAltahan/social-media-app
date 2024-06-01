@@ -15,14 +15,12 @@
                                             class="fa-solid fa-bars-staggered"></i>
                                         Profile</a></li>
 
-                                <li class="notification-trigger"><a class="msg-trigger-btn" href="#b">
-                                        <span>{{ count(Auth::user()->unreadnotifications) }}</span><i
+                                <li class="notification-trigger">
+                                    <a class="msg-trigger-btn" href="#b">
+                                        <span id="counter">{{ count(Auth::user()->unreadnotifications) }}</span><i
                                             class="fa-regular fa-bell"></i> notification</a>
-                                    <div class="message-dropdown" id="b">
-                                        <div class="dropdown-title">
-                                            <p class="recent-msg"><i class="fa-regular fa-bell"></i>Notification</p>
-                                        </div>
 
+                                    <div class="message-dropdown" id="b">
                                         {{-- notifications_____________________________________________________ --}}
                                         <ul class="dropdown-msg-list">
                                             @forelse(Auth::user()->notifications->take(5) as $notification)
@@ -89,8 +87,9 @@
                     <div class="header-top-right d-flex align-items-center justify-content-end">
                         <!-- header top search start -->
                         <div class="header-top-search">
-                            <form class="top-search-box">
-                                <input type="text" placeholder="Search" class="top-search-field">
+                            <form class="top-search-box" action="{{ route('friend.index') }}">
+                                <input type="text" placeholder="Search" name="search"
+                                    value="{{ request()->search }}" class="top-search-field">
                                 <button class="top-search-btn"><i class="flaticon-search"></i></button>
                             </form>
                         </div>

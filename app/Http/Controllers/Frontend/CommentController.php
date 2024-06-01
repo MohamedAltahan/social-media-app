@@ -46,13 +46,16 @@ class CommentController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        $postUser = $post->user;
+        //prevent notification if owner comments its post
+        if ($post->user->id != Auth::user()->id) {
+            $postUser = $post->user;
 
-        //send notification to user through a channel 'database'
-        Notification::send($postUser, new CommentNotification($post->id));
+            //send notification to user through a channel 'database'
+            Notification::send($postUser, new CommentNotification($post->id));
 
-        //send notification via broadcasting
-        CommentEvent::dispatch($post);
+            //send notification via broadcasting
+            CommentEvent::dispatch($post);
+        }
         return $comment;
     }
 

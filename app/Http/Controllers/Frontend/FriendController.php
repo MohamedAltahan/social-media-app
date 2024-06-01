@@ -21,9 +21,12 @@ class FriendController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('search')) {
+            $friends = User::where('name', 'like', '%' . $request->search . '%')->get();
+            return view('frontend.pages.friends', compact('friends'));
+        }
     }
 
     /**
@@ -100,8 +103,9 @@ class FriendController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $friendId)
     {
-        //
+        $this->deleteFriend($friendId);
+        return 'deleted';
     }
 }

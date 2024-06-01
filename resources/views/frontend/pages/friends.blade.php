@@ -31,7 +31,7 @@
                                         </li>
                                     @empty
                                         <div class="d-flex justify-content-center">
-                                            <h5 class="text-danger ">{{ __('No friends') }}</h5>
+                                            <h5 class="text-danger ">{{ __('Nothing ^__^') }}</h5>
                                         </div>
                                     @endforelse
                                 </ul>

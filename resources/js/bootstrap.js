@@ -36,11 +36,17 @@ window.Echo = new Echo({
 //USER.id(Auth user id) exist in master.blade
 window.Echo.private("notify_channel." + USER.id)
     .listen("LikeEvent", (e) => {
-        console.log(e);
+        toastr.success(e.senderName + " " + e.eventType);
+        $("#counter").load(" #counter");
+        $(".message-dropdown").load(" .message-dropdown > *");
     })
     .listen("CommentEvent", (e) => {
-        console.log(e);
+        toastr.success(e.senderName + " " + e.eventType);
+        $("#counter").load(" #counter");
+        $(".message-dropdown").load(" .message-dropdown > *");
     })
     .listen("FriendRequestEvent", (e) => {
-        console.log(e);
+        toastr.success(e.senderName + " " + e.eventType);
+        $("#counter").load(" #counter");
+        $(".message-dropdown").load(" .message-dropdown > *");
     });

@@ -1613,7 +1613,7 @@ textarea:focus {
     width: 20px;
     height: 1px;
     display: block;
-    background-color: #ccc;
+    background-color: #030303;
     margin-bottom: 4px;
     -webkit-transition: 0.4s;
     -o-transition: 0.4s;

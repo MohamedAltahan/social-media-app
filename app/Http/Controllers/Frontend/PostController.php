@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Image;
+use App\Models\Like;
 use App\Models\Post;
+use App\Models\User;
 use App\Traits\fileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -50,17 +53,18 @@ class PostController extends Controller
             ]);
         }
 
-
-
         return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $friendProfileId)
     {
-        //
+        $post = Post::withCount('comments', 'likes')->findOrFail($friendProfileId);
+        //my like on the posts
+        $myLikes = Like::where('user_id', Auth::user()->id)->pluck('post_id')->toArray();
+        return view('frontend.post.show', compact('post', 'myLikes'));
     }
 
     /**
@@ -68,7 +72,12 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        if (!Gate::allows('update', $post)) {
+            abort(403);
+        }
+        return view('frontend.post.edit', compact('post'));
     }
 
     /**
@@ -76,7 +85,30 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'body' => ['string'],
+            'post_image' => ['image', 'max:5000']
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        if (!Gate::allows('update', $post)) {
+            abort(403);
+        }
+
+        $post->update([
+            'body' => $request->body
+        ]);
+
+        if ($request->has('post_image')) {
+
+            $imagePath =  $this->fileUplaod($request, 'myDisk', 'post', 'post_image');
+            $post->image()->updateOrCreate([
+                'name' => $imagePath,
+            ]);
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -84,6 +116,11 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        if (!Gate::allows('update', $post)) {
+            abort(403);
+        }
+        $post->delete();
+        return 'deleted';
     }
 }
