@@ -213,7 +213,6 @@
 
 @push('scripts')
     <script src="{{ asset('js/comment.js') }}"></script>
-    <script src="{{ asset('js/add-comment.js') }}"></script>
     <script src="{{ asset('js/like-post.js') }}"></script>
     <script src="{{ asset('js/post.js') }}"></script>
 @endpush

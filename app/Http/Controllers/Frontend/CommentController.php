@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Notifications\CommentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 
 class CommentController extends Controller
@@ -89,6 +90,10 @@ class CommentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        if (Auth::user()->id != $comment->user_id) {
+            abort(403);
+        }
+        $comment->delete();
     }
 }

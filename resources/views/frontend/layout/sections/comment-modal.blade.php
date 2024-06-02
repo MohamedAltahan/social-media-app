@@ -25,6 +25,9 @@
                             <p class="list-subtitle">
                                 {{ \Carbon\Carbon::createFromTimeStamp(strtotime($comment->created_at))->diffForHumans() }}
                             </p>
+                            @if (Auth::user()->id == $comment->user_id)
+                                <a class="delete-comment" href="{{ route('comment.destroy', $comment->id) }}">Delete</a>
+                            @endif
                         </div>
                     </li>
                 @empty
@@ -36,3 +39,6 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script src="{{ asset('js/comment.js') }}"></script>
+@endpush

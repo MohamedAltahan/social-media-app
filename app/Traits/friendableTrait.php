@@ -10,10 +10,10 @@ trait friendableTrait
 {
 
     //add friend ________________________________________________________________
-    public function addFriend($friendId)
+    public function addFriend($friendId, $guard = 'web')
     {
         $friendship =  Friendship::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::guard($guard)->user()->id,
             'friend_id' => $friendId,
         ]);
         if ($friendship) {
@@ -23,10 +23,10 @@ trait friendableTrait
     }
 
     //accept friend ________________________________________________________________
-    public function acceptFriend($requester)
+    public function acceptFriend($requester, $guard = 'web')
     {
         $friendship = Friendship::where('user_id', $requester)
-            ->where('friend_id', Auth::user()->id)->first();
+            ->where('friend_id', Auth::guard($guard)->user()->id)->first();
         if ($friendship) {
             $friendship->update([
                 'status' => 'accepted'
@@ -37,15 +37,17 @@ trait friendableTrait
     }
 
     //delete friend ________________________________________________________________
-    public function deleteFriend($friendId)
+    public function deleteFriend($friendId, $guard = 'web')
     {
+        $authUser = Auth::guard($guard)->user()->id;
+
         //any of the can delete each other
         $friendshipdeleted = Friendship::where([
-            'user_id' => Auth::user()->id,
+            'user_id' => $authUser,
             'friend_id' => $friendId
         ])->orwhere([
             'user_id' => $friendId,
-            'friend_id' => Auth::user()->id
+            'friend_id' =>  $authUser
         ])->delete();
 
         if ($friendshipdeleted) {
@@ -55,9 +57,9 @@ trait friendableTrait
     }
 
     // check Friendship ________________________________________________________________
-    public function checkFriendship($friendProfileId)
+    public function checkFriendship($friendProfileId, $guard = 'web')
     {
-        $authUser = Auth::user()->id;
+        $authUser = Auth::guard($guard)->user()->id;
 
         if (Friendship::where([
             'friend_id' => $authUser,

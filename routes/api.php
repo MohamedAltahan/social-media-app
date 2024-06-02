@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\likeController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\TimelineController;
 use App\Http\Controllers\Api\UserController;
 use App\Models\User;
@@ -18,16 +23,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+
 
 // Route::get('/user/{id}', [TimelineController::class, 'index']);
-Route::get('/user/{id}', [UserController::class, 'index']);
+Route::get('/profile/{id}', [ProfileController::class, 'index']);
 
-
+//Auth________________________________________________________________________
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
     Route::post('/logout', 'logout')->middleware('auth:sanctum');
 });
+//profiles ___________________________________________________________________
+Route::get('/profile/{id}', [ProfileController::class, 'index']);
+
+//post ___________________________________________________________________
+Route::resource('/post', PostController::class)->middleware('auth:sanctum');
+
+//post ___________________________________________________________________
+Route::resource('/like', likeController::class)->middleware('auth:sanctum');
+
+//comment ___________________________________________________________________
+Route::resource('/comment', CommentController::class)->middleware('auth:sanctum');
+
+//search ___________________________________________________________________
+Route::get('/search', SearchController::class)->middleware('auth:sanctum');

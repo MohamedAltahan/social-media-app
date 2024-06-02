@@ -101,9 +101,9 @@ class PostController extends Controller
         ]);
 
         if ($request->has('post_image')) {
-
-            $imagePath =  $this->fileUplaod($request, 'myDisk', 'post', 'post_image');
-            $post->image()->updateOrCreate([
+            $oldImagePath = $post->image->name;
+            $imagePath =  $this->fileUpdate($request, 'myDisk', 'post', 'post_image', $oldImagePath);
+            $post->image()->updateOrCreate(['imageable_id' => $post->id], [
                 'name' => $imagePath,
             ]);
         }
