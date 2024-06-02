@@ -23,10 +23,13 @@ class FriendController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('search')) {
+        if ($request->has('search') && $request->search != null) {
             $friends = User::where('name', 'like', '%' . $request->search . '%')->get();
-            return view('frontend.pages.friends', compact('friends'));
+        } else {
+            $friends = null;
         }
+
+        return view('frontend.pages.friends', compact('friends'));
     }
 
     /**

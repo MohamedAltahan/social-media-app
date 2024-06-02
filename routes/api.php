@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\FriendshipController;
 use App\Http\Controllers\Api\likeController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
@@ -35,7 +36,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->middleware('auth:sanctum');
 });
 //profiles ___________________________________________________________________
-Route::get('/profile/{id}', [ProfileController::class, 'index']);
+Route::get('/profile/{id}', [ProfileController::class, 'index'])->middleware('auth:sanctum');
 
 //post ___________________________________________________________________
 Route::resource('/post', PostController::class)->middleware('auth:sanctum');
@@ -48,3 +49,6 @@ Route::resource('/comment', CommentController::class)->middleware('auth:sanctum'
 
 //search ___________________________________________________________________
 Route::get('/search', SearchController::class)->middleware('auth:sanctum');
+
+//friendship ___________________________________________________________________
+Route::resource('/friendship', FriendshipController::class)->middleware('auth:sanctum');

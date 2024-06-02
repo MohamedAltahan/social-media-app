@@ -17,6 +17,7 @@ $(document).ready(function () {
                     $(".add-friend-btn").text("Request sent");
                 } else if (data == "accepted") {
                     $(".add-friend-btn").text("Accepted");
+                    location.reload();
                 } else {
                     $(".add-friend-btn").text("Add Friend");
                 }
