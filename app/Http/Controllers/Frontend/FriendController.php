@@ -53,7 +53,7 @@ class FriendController extends Controller
 
         $oldFriendship = $this->checkFriendship($friend->id);
 
-
+        //toggle friendship status depend on the old status
         if ($oldFriendship == 'friend') {
 
             return  $this->deleteFriend($friend->id);

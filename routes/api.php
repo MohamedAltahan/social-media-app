@@ -35,20 +35,24 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/logout', 'logout')->middleware('auth:sanctum');
 });
-//profiles ___________________________________________________________________
-Route::get('/profile/{id}', [ProfileController::class, 'index'])->middleware('auth:sanctum');
 
-//post ___________________________________________________________________
-Route::resource('/post', PostController::class)->middleware('auth:sanctum');
+Route::group(['middleware' => 'auth:sanctum'], function () {
 
-//post ___________________________________________________________________
-Route::resource('/like', likeController::class)->middleware('auth:sanctum');
+    //profiles ___________________________________________________________________
+    Route::get('/profile/{id}', [ProfileController::class, 'index']);
 
-//comment ___________________________________________________________________
-Route::resource('/comment', CommentController::class)->middleware('auth:sanctum');
+    //post ___________________________________________________________________
+    Route::resource('/post', PostController::class);
 
-//search ___________________________________________________________________
-Route::get('/search', SearchController::class)->middleware('auth:sanctum');
+    //post ___________________________________________________________________
+    Route::resource('/like', likeController::class);
 
-//friendship ___________________________________________________________________
-Route::resource('/friendship', FriendshipController::class)->middleware('auth:sanctum');
+    //comment ___________________________________________________________________
+    Route::resource('/comment', CommentController::class);
+
+    //search ___________________________________________________________________
+    Route::get('/search', SearchController::class);
+
+    //friendship ___________________________________________________________________
+    Route::resource('/friendship', FriendshipController::class);
+});

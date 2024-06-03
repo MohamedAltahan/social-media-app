@@ -19,7 +19,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
 
-        $myPosts = Post::where('user_id', $request->user()->id)->latest()->get();
+        $myPosts = Post::where('user_id', $request->user()->id)->latest()->paginate(1);
 
         if (count($myPosts)) {
             return ApiResponse::sendResponse(200, 'posts retrived successfully',  PostResource::collection($myPosts));
@@ -100,7 +100,7 @@ class PostController extends Controller
             $updatedPost = $post->update($request->all());
 
             if ($request->has('post_image')) {
-                $oldImagePath = $post->image->name;
+                $oldImagePath = @$post->image->name;
                 $imagePath =  $this->fileUpdate($request, 'myDisk', 'post', 'post_image', $oldImagePath);
                 $post->image()->updateOrCreate(['imageable_id' => $post->id], [
                     'name' => $imagePath,

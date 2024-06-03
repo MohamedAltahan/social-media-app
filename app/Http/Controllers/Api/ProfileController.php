@@ -16,22 +16,40 @@ use Illuminate\Support\Facades\Auth;
 class ProfileController extends Controller
 {
     use friendableTrait;
-    public function index($id)
+    public function index($profileId)
     {
-        $user = User::find($id);
+        $user = User::find($profileId);
 
         if ($user) {
-            $friendship = $this->checkFriendship($id, 'sanctum');
-            $posts = Post::where('user_id', $id)->orderBy('created_at', 'Desc')->paginate(1);
+            $friendship = $this->checkFriendship($profileId, 'sanctum');
+            $posts = Post::where('user_id', $profileId)->orderBy('created_at', 'Desc')->paginate(1);
+            if ($posts->total() >= $posts->perPage()) {
+                $data = [
+                    'posts' => PostResource::collection($posts),
+                    'paginationLinks' => [
+                        'currentPage' => $posts->currentPage(),
+                        'perPage' => $posts->perPage(),
+                        'totatPages' => $posts->total(),
+                        'links' => [
+                            'first' => $posts->url(1),
+                            'last' => $posts->url($posts->lastPage())
+                        ],
+                    ],
+                ];
+            } else {
+                $data =  PostResource::collection($posts);
+            }
             return ApiResponse::sendResponse(
                 200,
                 'profile data returned successfully',
                 [
-                    'posts' => PostResource::collection($posts),
+                    'friendShip' => $friendship,
                     'user' => new UserResource($user),
-                    'friendShip' => $friendship
+                    'paginatePosts' => $data,
                 ]
             );
         }
+
+        return ApiResponse::sendResponse(200, 'user not found', []);
     }
 }

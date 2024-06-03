@@ -16,4 +16,9 @@ class Image extends Model
     {
         return $this->morphTo(__FUNCTION__, 'imageable_type', 'imageable_id');
     }
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class, 'imageable_id', 'id');
+    }
 }

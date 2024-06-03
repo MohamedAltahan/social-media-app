@@ -23,6 +23,9 @@ $(document).ready(function () {
     $("body").on("click", "#add-comment-btn", function (e) {
         let url = $(this).data("url");
         let commentBody = $("#comment_body").val();
+        if (commentBody == "") {
+            return false;
+        }
         let postId = $("#post_id").val();
         console.log(url + "/" + postId);
         $.ajax({
