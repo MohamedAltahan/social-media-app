@@ -42,17 +42,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/profile/{id}', [ProfileController::class, 'index']);
 
     //post ___________________________________________________________________
-    Route::resource('/post', PostController::class);
+    Route::apiResource('/post', PostController::class);
 
     //post ___________________________________________________________________
-    Route::resource('/like', likeController::class);
+    Route::apiResource('/like', likeController::class);
 
     //comment ___________________________________________________________________
-    Route::resource('/comment', CommentController::class);
+    Route::apiResource('/comment', CommentController::class);
 
     //search ___________________________________________________________________
     Route::get('/search', SearchController::class);
 
     //friendship ___________________________________________________________________
-    Route::resource('/friendship', FriendshipController::class);
+    Route::apiResource('/friendship', FriendshipController::class);
 });

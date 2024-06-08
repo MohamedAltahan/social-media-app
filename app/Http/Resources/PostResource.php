@@ -21,6 +21,7 @@ class PostResource extends JsonResource
             'post_image' => 'uploads/' . @$this->image->name,
             'likesCount' => count($this->likes),
             'commentsCount' => count($this->comments)
+
         ];
     }
 }

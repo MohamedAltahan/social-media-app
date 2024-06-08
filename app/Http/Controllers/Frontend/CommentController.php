@@ -47,7 +47,7 @@ class CommentController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        //prevent notification if owner comments its post
+        //prevent notification if owner comments on its post
         if ($post->user->id != Auth::user()->id) {
             $postUser = $post->user;
 

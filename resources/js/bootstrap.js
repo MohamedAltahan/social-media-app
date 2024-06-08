@@ -32,7 +32,7 @@ window.Echo = new Echo({
     enabledTransports: ["ws", "wss"],
 });
 
-//write enent name without namespace or add(.) in order to write full namespace
+//write event name without namespace or add(.) in order to write full namespace
 //USER.id(Auth user id) exist in master.blade
 window.Echo.private("notify_channel." + USER.id)
     .listen("LikeEvent", (e) => {
